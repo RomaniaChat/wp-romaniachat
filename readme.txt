@@ -1,82 +1,115 @@
 === Romania Chat ===
 Contributors: romaniachat, showchat
 Donate link: https://wp.romaniachat.eu
-Tags: irc, chat, webchat, romaniachat, romania
-Requires at least: 6.0
-Tested up to: 6.6.2
-Requires PHP: 6.1
-Stable tag: 2.0
+Tags: chat, irc, kiwiirc, romaniachat, live chat
+Requires at least: 5.0
+Tested up to: 6.9
+Requires PHP: 7.4
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Integrati serviciile retelei IRC RomaniaChat in WordPress. 
-Daca ai un blog pe orice platforma cu Wordpress si vrei sa integrezi un WebChat, iti oferim solutia perfecta.
+Integrează chat-ul RomaniaChat (KiwiIRC) în WordPress folosind un shortcode simplu și rapid.
 
-== Descriere ==
+== Description ==
 
-English:
-The plugin allows a webmaster to insert webchat to chat in the RomaniaChat Chat/IRC Network.
+WP RomaniaChat este un plugin WordPress modern care permite integrarea chat-ului IRC direct în site-ul tău, folosind platforma RomaniaChat și clientul KiwiIRC.
 
-Romana:
-Acest plugin permite unui webmaster sa introduca un webchat pentru chat in reteaua IRC / RomaniaChat.
+Pluginul este optimizat pentru performanță, securitate și ușurință în utilizare, fiind potrivit pentru orice tip de site.
+
+🔗 Site oficial:  [https://wp.romaniachat.eu/](https://wp.romaniachat.eu/)
+
+== Features ==
+
+* 💬 Integrare chat IRC prin shortcode
+* 🔗 Suport pentru unul sau mai multe canale
+* 🎨 Selectare temă vizuală (dark, osprey, etc.)
+* 📱 Compatibil mobil și desktop
+* ⚡ Încărcare rapidă prin iframe optimizat
+* 🔒 Sanitizare și validare date
+* 🎛 Panou de administrare modern
+* 🧩 Configurare simplă, fără cunoștințe tehnice
 
 == Installation ==
 
-Pentru a instala pluginul.
+1. Încarcă folderul pluginului în `/wp-content/plugins/`
+2. Activează pluginul din meniul WordPress „Plugins”
+3. Accesează „RomaniaChat” din meniul admin pentru configurare
+4. Adaugă shortcode-ul în pagină sau articol
 
-1. Descarcati plugin-ul, dezarhivati fisierul si incarcati-l in directorul `/ wp-content / plugins /` sau instalati plugin-ul prin ecranul pluginurilor WordPress.
-2. Activati pluginul prin meniul "Pluginuri" din WordPress.
-3. Configurati diferitele optiuni din meniul "RomaniaChat" din WordPress.
+== Usage ==
 
-Utilizare:
-
-Introduceti in pagina unde dorti sa apara chat-ul urmatorul cod scurt:
+Adaugă chat-ul într-o pagină:
 
 [romaniachat]
 
-Puteti specifica canalul pentru o anumita pagina in loc sa utilizati canalul implicit configurat cu:
+Pentru un canal specific:
 
-[romaniachat chan=#Romania]
+[romaniachat chan="#romania"]
 
-== Frequently Asked Questions ==
+Pentru mai multe canale:
 
-Daca aveti intrebari sau aveti nevoie de ajutor va rog sa folositi pagina de Suport de pe pagina pluginului: [RomaniaChat](https://wp.romaniachat.eu/ "WP RomaniaChat")
+[romaniachat chan="#romania,#radioclick,#trivia"]
 
-== Contribute to this project ==
+== Settings ==
 
-Rapoartele de erori și solicitările de extragere sunt binevenite pe [GitHub](https://github.com/RomaniaChat/wp-romaniachat "GitHub")
-Dacă găsiți erori sau doriți să îmbunătățiți unele părți ale pluginului, puteți face acest lucru deschizând o problemă sau o solicitare de extragere
+Pluginul permite configurarea următoarelor opțiuni:
+
+* **Pseudonim (Nick)** – suport pentru generare automată (ex: User_?)
+* **Canale** – canale IRC separate prin virgulă
+* **Temă vizuală** – stilul interfeței chat
+* **Dimensiuni iframe** – lățime și înălțime personalizabile
+
+== FAQ ==
+
+= Este necesară înregistrarea utilizatorilor? =
+Nu. Utilizatorii se pot conecta instant fără cont.
+
+= Funcționează pe mobil? =
+Da, pluginul este complet compatibil cu dispozitive mobile.
+
+= Pot folosi mai multe canale? =
+Da, separând canalele prin virgulă.
+
+= Ce teme sunt disponibile? =
+Depinde de versiunea KiwiIRC. Cele mai comune sunt: default, osprey, dark, radioclick.
 
 == Screenshots ==
 
-1. Captura WebChat Ecran Principal.
-
-2. Pagina de optiuni de configurare a pluginului.
-
-3. Informati suplimentare a pluginului.
-
-4. Captura tema RomaniaChat
+1. Panou de administrare modern
+2. Chat integrat în pagină
+3. Configurare plugin
 
 == Changelog ==
 
-= 1.0 =
-* Lansare plugin.
+= 2.2 =
+* Corectare fisier (fix readme.txt)
 
-= 1.1 =
-* Schimbare de link si corectarea radio-ului
-
-= 1.2 =
-* Corectari Errori
-
-= 1.3 =
-* Schimbare server
-
-= 1.4 =
-* Comunicare prin ssl
+= 2.1 =
+* Interfață admin modernizată
+* Traducere completă în limba română
+* Corectare salvare setări (fix WordPress options error)
+* Îmbunătățire securitate (sanitizare input)
+* Optimizare generare URL KiwiIRC
+* Cod refactorizat și curățat
 
 = 2.0 =
-* Ne luăm rămas bun de la qwebirc si continuăm cu o nouă versiune kiwiirc
+* Integrare îmbunătățită KiwiIRC
+* Suport teme multiple
+* Optimizări performanță
+
+= 1.0 =
+* Versiune inițială
 
 == Upgrade Notice ==
 
-* Versiunea Stabila. 2.0
+= 2.2 =
+Recomandat pentru toți utilizatorii. Include îmbunătățiri de securitate și stabilitate.
+
+== License ==
+
+Acest plugin este distribuit sub licența GPLv2 sau mai recentă.
+
+== Credits ==
+
+Dezvoltat pentru platforma RomaniaChat.
