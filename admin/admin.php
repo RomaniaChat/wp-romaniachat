@@ -1,190 +1,322 @@
 <?php
+if (!defined('ABSPATH')) exit;
 
-if ( !defined( 'ABSPATH' ) ) exit;
+/* =========================
+   MENU
+========================= */
 /**
 * Function that generates an entry in the Administration menu
-* @since  1.0
+* @since  2.1
 */
 function romaniachat_plugin_menu() {
+
     add_menu_page(
-		'Configurare RomaniaChat',             // page title
-        'RomaniaChat',                         // menu title
-        'administrator',                       // capability role with permissions
-        'romaniachat_settings',                // slug
-        'romaniachat_settingspage',            // callback function
-	plugins_url('img/rcr.png', dirname( __FILE__ ) ), // icon URL
-        60                                     // menu position
-        );
+        'RomaniaChat',
+        'RomaniaChat',
+        'manage_options',
+        'romaniachat_settings',
+        'romaniachat_settingspage',
+        'dashicons-format-chat'
+    );
 
-    add_submenu_page('romaniachat_settings',
-        'Configuracion',
-        'Informati',                          // submenu title
-        'administrator',                      // capability role with permissions
-        'romaniachat_settings',               // slug
-        'romaniachat_settingspage');          // callback function
-
-    add_submenu_page('romaniachat_settings',
-        'Configuracion',
-        'Setarii',                            // submenu title
-        'administrator',                      // capability role with permissions
-        'romaniachat_settings_eu',            // slug
-        'romaniachat_settingspage_eu');       // callback function
-
+    add_submenu_page(
+        'romaniachat_settings',
+        'Setări',
+        'Configurare',
+        'manage_options',
+        'romaniachat_settings_eu',
+        'romaniachat_settingspage_eu'
+    );
 }
-
 add_action('admin_menu', 'romaniachat_plugin_menu');
 
 /**
  * Function that records the values from the internal DB
  * @since  1.0
  */
-function romaniachat_settings() {
-	
-	register_setting('romaniachat-eu',
-                     'romaniachat_nick');
-    register_setting('romaniachat-eu',
-                     'romaniachat_server');
-    register_setting('romaniachat-eu',
-                     'romaniachat_chan');
-    register_setting('romaniachat-eu',
-                     'romaniachat_style');
-    register_setting('romaniachat-eu',
-                     'romaniachat_height');
-    register_setting('romaniachat-eu',
-                     'romaniachat_width');
+function romaniachat_register_settings() {
+
+    register_setting('romaniachat-eu', 'romaniachat_nick');
+    register_setting('romaniachat-eu', 'romaniachat_server');
+    register_setting('romaniachat-eu', 'romaniachat_chan');
+    register_setting('romaniachat-eu', 'romaniachat_style');
+    register_setting('romaniachat-eu', 'romaniachat_width');
+    register_setting('romaniachat-eu', 'romaniachat_height');
+
 }
+add_action('admin_init', 'romaniachat_register_settings');
 
-add_action('admin_init', 'romaniachat_settings');
 
-/**
- * filter versin echo
- * @since  2.0
- */
-add_filter( 'wp_romaniachat', 'wp_romaniachat_version' );
-function wp_romaniachat_version( $arg = '' ) {
-    return '2.0';
-}
-
+/* =========================
+   INFO PAGE (MODERN RO)
+========================= */
 /**
  * Function that renders the main configuration page
  * info wp romaniachat
  * @since  1.0
  */
 function romaniachat_settingspage() {
-    // check user capabilities
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-?>
+    if (!current_user_can('manage_options')) return;
+
+    $version = defined('ROMANIACHAT_VERSION') ? ROMANIACHAT_VERSION : '1.0';
+    ?>
 
     <div class="wrap">
-        <h2>Informati WordPress Plugin RomaniaChat</h2>
-        <p>Pluginul RomaniaChat pentru WordPress va permite sa utilizati in pagina dvs de web wordpress, servicile pe care reteaua <a href="https://romaniachat.eu/" target="_blank"><strong>RomaniaChat</strong></a> le ofera pentru webmasteri.</p>
-		<p>WebChat complet adaptabil la dimensiunea ecranului pe care este afisat, modificand utilitatea sa pentru a fi mai usor de utilizat.</p>
-        <div class="card pressthis">
-            <h3>Instructiuni de utilizare</h3>
-            <p>Introduceti urmatorul cod intr-o pagina:</p>
-            <h4>[romaniachat]</h4>
-            <p>Puteti specifica canalul pentru o anumita pagina in loc sa utilizati canalul implicit configurat cu:</p>
-            <h4>[romaniachat chan=#Romania]</h4>
-            <br/>
+
+        <style>
+        .rc-container { max-width: 900px; }
+
+        .rc-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .rc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rc-title {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .rc-badge {
+            background: #2271b1;
+            color: #fff;
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .rc-section { margin-top: 25px; }
+
+        .rc-section h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .rc-code {
+            background: #f6f7f7;
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 6px 0;
+            font-family: monospace;
+        }
+
+        .rc-desc {
+            font-size: 14px;
+            color: #444;
+        }
+
+        .rc-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #2271b1;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .rc-button:hover {
+            background: #135e96;
+            color: #fff;
+        }
+
+        .rc-footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+        </style>
+
+        <div class="rc-container">
+            <div class="rc-card">
+
+                <div class="rc-header">
+                    <h1 class="rc-title">💬 RomaniaChat</h1>
+                    <span class="rc-badge">WP RomaniaChat <?php echo esc_html($version); ?></span>
+                </div>
+
+                <p class="rc-desc">
+                    Integrează serviciul de Chat al retelei de IRC RomaniaChat in WordPress.
+                </p>
+
+                <div class="rc-section">
+                    <h2>📌 Utilizare</h2>
+
+                    <p class="rc-desc">Shortcode standard:</p>
+                    <div class="rc-code">[romaniachat]</div>
+
+                    <p class="rc-desc">Canal specific:</p>
+                    <div class="rc-code">[romaniachat chan="#Romania"]</div>
+
+                    <p class="rc-desc">Mai multe canale:</p>
+                    <div class="rc-code">[romaniachat chan="#Romania,#Radioclick"]</div>
+                </div>
+
+                <div class="rc-section">
+                    <h2>🌐 Platformă</h2>
+
+                    <p class="rc-desc">
+                        RomaniaChat este o platformă IRC gratuită, modernă și optimizată pentru toate dispozitivele.
+                    </p>
+
+                    <a href="https://wp.romaniachat.eu/" target="_blank" class="rc-button">
+                        🔗 Vizitează site-ul pluginului
+                    </a>
+                </div>
+
+                <div class="rc-footer">
+                    Versiune plugin: <?php echo esc_html($version); ?>
+                </div>
+
+            </div>
         </div>
-        <div class="card pressthis">
-        <p>Pentru mai multe documentatii despre utilizare si configurare <a href="https://wp.romaniachat.eu" target="_blank" title="Documentatie">Click Aici.</p>
-        <br>
-		<div class="actions alignleft"><a href="admin.php?page=romaniachat_settings_eu" title="Settings"><button>Setari WP RomaniaChat</button></a></div>
-			<br>
-			<br>
-			Rulati Versiunea RomaniaChat<?php echo apply_filters( 'wp_romaniachat', '' ); ?>
-        </div>
+
     </div>
-<?php
+    <?php
 }
 
+
+/* =========================
+   SETTINGS PAGE (MODERN RO)
+========================= */
 /**
  * Function that renders the main configuration page
  * config wp romaniachat
- * @since  2.0
+ * @since  2.1
  */
 function romaniachat_settingspage_eu() {
-    // check user capabilities
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-
-    //Error message
-    if (isset($_GET['settings-updated'])) {
-        add_settings_error('rcr_messages', 'rcr_message_ok', ('Updated values'), 'updated');
-    }
-    if (isset($_GET['settings-error'])) {
-        add_settings_error('rcr_messages', 'rcr_message_error', ('An error occurred while saving'), 'error');
-    }
-
-    settings_errors('rcr_messages');
-?>
+    if (!current_user_can('manage_options')) return;
+    ?>
 
     <div class="wrap">
-        <h2>Configurare WP RomaniaChat</h2>
-        <h3>Din aceasta sectiune puteti configura comportamentul WebChat-ului WP RomaniaChat.</h3>
-        <form method="POST" action="options.php">
-            <?php
-                settings_fields('romaniachat-eu');
-                do_settings_sections('romaniachat-eu');
-            ?>
-   <table width="100%" border="0">
-	<tr>
-    <td><strong><?php esc_html_e("Nick Sugestie:" ); ?></strong></td>
-    <td><input type="text" id="romaniachat_nick" name="romaniachat_nick" value="<?php echo esc_attr( get_option('romaniachat_nick') ); ?>" size="21"></td>
-    <td><em>
-	<?php esc_html_e('Nick implicit pentru oaspetii camerei dvs de chat. (Inplicit este RomaniaChat_? unde ? este inlocuit cu 3-numere aleatoriu)', 'wp-romaniachat'); ?></em></td>
-  </tr>
-    <tr>
-    <td><strong><?php esc_html_e("Numele Canalului:" ); ?></strong></td>
-    <td><input type="text" name="romaniachat_chan"  value="<?php echo esc_attr( get_option('romaniachat_chan') ); ?>" size="21"></td>
-    <td><em>
-	<?php esc_html_e('Numele camerei de chat. (Implicit este #Romania,#RadioClick,#Trivia)', 'wp-romaniachat'); ?></em></td>
-  </tr>					
-  <tr>
-    <td><strong><?php esc_html_e("Tema Stilul:" ); ?></strong></td>
-    <td><select name="romaniachat_style"
-	            id="romaniachat_style">
-	           <option value="default" <?php selected(get_option('romaniachat_style'), "default"); ?>>Default</option>
-               <option value="osprey" <?php selected(get_option('romaniachat_style'), "osprey"); ?>>Osprey</option>
-               <option value="radioactive" <?php selected(get_option('romaniachat_style'), "radioactive"); ?>>Radioactive</option>
-               <option value="dark" <?php selected(get_option('romaniachat_style'), "dark"); ?>>Dark</option>
-               <option value="nightswatch" <?php selected(get_option('romaniachat_style'), "nightswatch"); ?>>Nightswatch</option>
-			   <option value="sky" <?php selected(get_option('romaniachat_style'), "sky"); ?>>Sky</option>
-			   <option value="coffee" <?php selected(get_option('romaniachat_style'), "coffee"); ?>>Coffee</option>
-			   <option value="grayfox" <?php selected(get_option('romaniachat_style'), "grayfox"); ?>>GrayFox</option>
-        </select>
-		<td><em>
-		<?php esc_html_e('Stilul de culoare al camerei de chat. (Implicit este Default)', 'wp-romaniachat'); ?></em></td>
-  </tr> 
-	<tr>
-    <td><strong><?php esc_html_e("Latime:" ); ?></strong></td>
-    <td><input type="text" 
-	name="romaniachat_width"
-	id="romaniachat_width"
-	value="<?php echo esc_attr( get_option('romaniachat_width') ); ?>" size="10"></td>
-    <td><em>
-	<?php esc_html_e('Latimea camerei de chat. (Implicit este 100%)', 'wp-romaniachat'); ?></em></td>
-  </tr>
-   <tr>
-    <td><strong><?php esc_html_e("Inaltime:" ); ?></strong></td>
-    <td><input type="text"
-	name="romaniachat_height"
-	id="romaniachat_height"
-    value="<?php echo esc_attr( get_option('romaniachat_height') ); ?>" size="10"></td>
-    <td><em>
-	<?php esc_html_e('Inaltimea camerei de chat. (Implicit este 500)', 'wp-romaniachat'); ?></em></td>
-  </tr>
-<br/>				
-</table>		
-        <p style="font-weight: bold;">
-		<?php esc_html_e('NOTA: Preferintele utilizatorilor vor avea intotdeauna prioritate fata de aceasta configuratie. De exemplu, daca un utilizator configureaza ca o anumita porecla este utilizata si un anumit canal este accesat, configuratia respectiva va avea intotdeauna prioritate fata de cea a acestei configuratii, deci va intra in canalul indicat in configuratie.', 'wp-romaniachat'); ?></p>
-            <?php submit_button(); ?>
-        </form>
+
+        <style>
+        .rc-settings {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 820px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .rc-settings h2 { margin-top: 0; }
+
+        .rc-table th {
+            text-align: left;
+            padding: 12px;
+            width: 180px;
+        }
+
+        .rc-table td { padding: 10px; }
+
+        .rc-table input,
+        .rc-table select {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .rc-desc {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            display: block;
+        }
+        </style>
+
+        <div class="rc-settings">
+
+            <h2>⚙️ Setări chat</h2>
+
+            <form method="post" action="options.php">
+                <?php settings_fields('romaniachat-eu'); ?>
+
+                <table class="form-table rc-table">
+
+                    <tr>
+                        <th>Pseudonim (Nick)</th>
+                        <td>
+                            <input type="text" name="romaniachat_nick"
+                                value="<?php echo esc_attr(get_option('romaniachat_nick')); ?>">
+                            <span class="rc-desc">
+                                Exemplu: User_? → generează automat User_123
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Canale</th>
+                        <td>
+                            <input type="text" name="romaniachat_chan"
+                                value="<?php echo esc_attr(get_option('romaniachat_chan')); ?>">
+                            <span class="rc-desc">
+                                Separate prin virgulă: #romania,#radioclick,#trivia
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Tema</th>
+                        <td>
+                            <select name="romaniachat_style">
+                                <option value="default" <?php selected(get_option('romaniachat_style'), "default"); ?>>Default</option>
+								<option value="radioclick" <?php selected(get_option('romaniachat_style'), "radioclick"); ?>>RadioClick</option>
+                                <option value="osprey" <?php selected(get_option('romaniachat_style'), "osprey"); ?>>Osprey</option>
+                                <option value="dark" <?php selected(get_option('romaniachat_style'), "dark"); ?>>Dark</option>
+                                <option value="nightswatch" <?php selected(get_option('romaniachat_style'), "nightswatch"); ?>>Nightswatch</option>
+								<option value="elite" <?php selected(get_option('romaniachat_style'), "elite"); ?>>Elite</option>
+								<option value="grayfox" <?php selected(get_option('romaniachat_style'), "grayfox"); ?>>Grayfox</option>
+								<option value="sky" <?php selected(get_option('romaniachat_style'), "sky"); ?>>Sky</option>
+								<option value="roz" <?php selected(get_option('romaniachat_style'), "roz"); ?>>Roz</option>
+								<option value="marou" <?php selected(get_option('romaniachat_style'), "marou"); ?>>Marou</option>
+								<option value="albastru" <?php selected(get_option('romaniachat_style'), "albastru"); ?>>Albastru</option>
+                            </select>
+							<span class="rc-desc">
+                                Stil vizual al chat-ului
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Lățime</th>
+                        <td>
+                            <input type="text" name="romaniachat_width"
+                                value="<?php echo esc_attr(get_option('romaniachat_width')); ?>">
+								<span class="rc-desc">
+                                Exemplu: 100% sau 800px
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Înălțime</th>
+                        <td>
+                            <input type="text" name="romaniachat_height"
+                                value="<?php echo esc_attr(get_option('romaniachat_height')); ?>">
+								<span class="rc-desc">
+                                Exemplu: 500px
+                            </span>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <?php submit_button('💾 Salvează setările'); ?>
+            </form>
+
+        </div>
+
     </div>
-<?php
+
+    <?php
 }
-?>
